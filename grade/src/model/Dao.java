@@ -12,6 +12,8 @@ public class Dao {
 	private Gmodel[] gArr = new Gmodel[MAX];
 	private Gmodel[] rankArr = new Gmodel[MAX];
 
+
+
 	private Dao() {
 	}
 
@@ -28,7 +30,7 @@ public class Dao {
 	public boolean empty() {
 
 		if (top == 0) {
-			m("ÀÔ·ÂµÈ Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+			m("ì…ë ¥ëœ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 			return false;
 		}
 		return true;
@@ -48,8 +50,7 @@ public class Dao {
 			g.setRank(gArr[i].getRank());
 			rankArr[i] = g;
 		}
-		
-		
+
 		for (int i = 0; i < top; i++) {
 			for (int j = 0; i + j < top; j++) {
 				if (rankArr[i].getAv() > rankArr[i + j].getAv()) {
@@ -64,10 +65,18 @@ public class Dao {
 		}
 
 		for (int i = 0; i < top; i++) {
+
 			for (int j = 0; j < top; j++) {
-				if (gArr[i].getIdx() == rankArr[j].getIdx()) {
+
+				if (gArr[i].getAv() == rankArr[j].getAv()) {
+
 					gArr[i].setRank(j + 1);
+
+					if (j > 0 && rankArr[j].getAv() == rankArr[j-1].getAv()) {
+						gArr[i].setRank(gArr[i].getRank()-1);
+					}
 				}
+
 			}
 		}
 
@@ -82,7 +91,7 @@ public class Dao {
 		makeR();
 
 		m(gArr[top - 1].toString());
-		m("ÀÔ·Â¿Ï·á");
+		m("ì…ë ¥ì™„ë£Œ");
 
 	}
 
@@ -150,7 +159,7 @@ public class Dao {
 
 		}
 		if (!flag) {
-			m("Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			m("ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			new Crt().service();
 		}
 		;
@@ -171,46 +180,55 @@ public class Dao {
 
 				switch ((int) dt.get("mdfno")) {
 				case 1:
-					m("¼öÁ¤ÇÒ ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä");
+					m("ìˆ˜ì •í•  ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”");
 					gArr[i].setName(sc.next());
 					break;
 
 				case 2:
-					m("¼öÁ¤ÇÒ ±¹¾î Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
-					while(true) {
+					m("ìˆ˜ì •í•  êµ­ì–´ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
+					while (true) {
 						int j = sc.nextInt();
-						if(j <0 || j >100) {
-							m("Àß¸øµÈ Á¡¼ö ¹üÀ§ ÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-						}else {gArr[i].setKr(j); break;}
+						if (j < 0 || j > 100) {
+							m("ì˜ëª»ëœ ì ìˆ˜ ë²”ìœ„ ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+						} else {
+							gArr[i].setKr(j);
+							break;
 						}
+					}
 					break;
 				case 3:
-					m("¼öÁ¤ÇÒ ¿µ¾î Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
-					while(true) {
+					m("ìˆ˜ì •í•  ì˜ì–´ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
+					while (true) {
 						int j = sc.nextInt();
-						if(j <0 || j >100) {
-							m("Àß¸øµÈ Á¡¼ö ¹üÀ§ ÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-						}else {gArr[i].setEn(j); break;}
+						if (j < 0 || j > 100) {
+							m("ì˜ëª»ëœ ì ìˆ˜ ë²”ìœ„ ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+						} else {
+							gArr[i].setEn(j);
+							break;
 						}
+					}
 					break;
 				case 4:
-					m("¼öÁ¤ÇÒ ¼öÇĞ¾î Á¡¼ö¸¦ ÀÔ·ÂÇÏ¼¼¿ä");
-					while(true) {
+					m("ìˆ˜ì •í•  ìˆ˜í•™ì–´ ì ìˆ˜ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
+					while (true) {
 						int j = sc.nextInt();
-						if(j <0 || j >100) {
-							m("Àß¸øµÈ Á¡¼ö ¹üÀ§ ÀÔ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØÁÖ¼¼¿ä.");
-						}else {gArr[i].setMath(j); break;}
+						if (j < 0 || j > 100) {
+							m("ì˜ëª»ëœ ì ìˆ˜ ë²”ìœ„ ì…ë‹ˆë‹¤. ë‹¤ì‹œ ì…ë ¥í•´ì£¼ì„¸ìš”.");
+						} else {
+							gArr[i].setMath(j);
+							break;
 						}
+					}
 					break;
 				default:
-					m("Àß¸øµÈÀÔ·ÂÀÔ´Ï´Ù");
+					m("ì˜ëª»ëœì…ë ¥ì…ë‹ˆë‹¤");
 					return;
 
 				}
 
 				gArr[i].setTotal(gArr[i].getEn() + gArr[i].getKr() + gArr[i].getMath());
 				gArr[i].setAv((double) (gArr[i].getEn() + gArr[i].getKr() + gArr[i].getMath()) / (double) 3);
-				m("¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+				m("ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				makeR();
 				m(gArr[i].toString());
 
@@ -227,18 +245,12 @@ public class Dao {
 				m(gArr[i].toString());
 				for (int j = i; j < top; j++) {
 					gArr[j] = gArr[j + 1];
-					
-					
-					
-				}
-				
-				
-				
 
-				m("»èÁ¦°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù");
+				}
+
+				m("ì‚­ì œê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤");
 				top--;
-				
-				
+
 				makeR();
 
 			}
