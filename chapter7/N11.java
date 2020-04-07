@@ -1,5 +1,4 @@
-package chapter7;
-
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -36,6 +35,7 @@ public class N11 {
 	public static void main(String[] args) {
 		Vector<Nation> vn = new Vector<>();
 		Scanner sc = new Scanner(System.in);
+		Random rd = new Random();
 
 		System.out.println("GAME START");
 		while (true) {
@@ -45,41 +45,49 @@ public class N11 {
 			case 1:
 				while (true) {
 					System.out.println("현재 " + vn.size() + "개 입력완료");
-					System.out.print("나라와 수도 입력" + (vn.size() + 1)+">>");
+					System.out.print("나라와 수도 입력" + (vn.size() + 1) + ">>");
 
 					String country = sc.next();
-					
+
 					if (country.equals("그만")) {
 						break;
 					}
-					
-					
+
 					String capital = sc.next();
-					
-					
-					
-					
+
 					for (int i = 0; i < vn.size(); i++) {
 						if (vn.elementAt(i).getCountry().equals(country)) {
-							System.out.println(country + "는 이미 있음"); break;
-						} 
-						
+							System.out.println(country + "는 이미 있음");
+							break;
+						}
 
 					}
-					
+
 					Nation n = new Nation(country, capital);
 					vn.add(n);
-					
 
 				}
-
-			case 2:
+				break;
+			case 2:	sc.nextLine();
 				while (true) {
+					int s = rd.nextInt(vn.size());
+				
+					System.out.print(vn.elementAt(s).getCountry() + "의 수도는?");
+					String capital = sc.nextLine();
 					
 					
-					
+					if (capital.equals("그만")) {
+						break;
+					}
+
+					if (vn.elementAt(s).getCountry().equals(capital)) {
+						System.out.println("정답!");
+					} else {
+						System.out.println("아닙니다!");
+					}
+
 				}
-			
+				break;
 			case 3:
 				System.out.println("bye");
 				break;
