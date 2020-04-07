@@ -1,0 +1,105 @@
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.Vector;
+
+class Word {
+	String en;
+	String Kr;
+
+	public String getEn() {
+		return en;
+	}
+
+	public void setEn(String en) {
+		this.en = en;
+	}
+
+	public String getKr() {
+		return Kr;
+	}
+
+	public void setKr(String kr) {
+		Kr = kr;
+	}
+
+	public Word(String en, String kr) {
+		this.en = en;
+		this.Kr = kr;
+	}
+
+}
+
+public class N12 {
+	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
+		Vector<Word> v = new Vector<Word>();
+		Random rd = new Random();
+		System.out.println("********명품영어단어테스트************");
+		while (true) {
+			System.out.print("1.테스트 2.단어삽입  3.종료 >>");
+
+			switch (sc.nextInt()) {
+			case 1:
+				sc.nextLine();
+				while (true) {
+					
+					int idx = rd.nextInt(v.size());
+					System.out.println(v.elementAt(idx).getEn() + "?");
+					
+//					ArrayList<String> ans = new ArrayList<String>();
+					
+					String[] sArr = new String[4];
+					
+					sArr[0] = v.elementAt(idx).getKr();
+					for(int i = 1 ; i < 3 ; i++) {
+						sArr[i] = v.elementAt(rd.nextInt(v.size())).getKr();
+					}
+					
+					Set<Integer> hs = new HashSet<Integer>();
+
+					for(int j = 0 ; hs.size() < 5 ; j++) {
+						hs.add(rd.nextInt(4)+1);
+					}
+					
+					ArrayList at=new ArrayList();
+					at.addAll(hs);
+					
+				
+					
+					System.out.print("(1)"+sArr[at.get(0)]);
+					System.out.print("(2)"+sArr[at.get(1)]);
+					System.out.print("(3)"+sArr[at.get(2)]);
+					System.out.print("(4)"+sArr[at.get(3)]);
+					
+					
+				}
+
+			case 2:
+				System.out.println("영어 단어에 그만을 입력하면 종료합니다");
+				while (true) {
+					System.out.print("영어 한글 입력>>");
+					String key = sc.next();
+
+					if (key.equals("그만")) {
+						break;
+					}
+
+					String value = sc.next();
+					Word w = new Word(key, value);
+					v.add(w);
+
+				}
+
+			}
+
+		}
+
+	}
+}
