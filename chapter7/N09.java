@@ -12,10 +12,11 @@ class MyStack <e> implements IStack{
 	
 	@Override
 	public Object pop() {
+		if(ev.size()==0){
+			return null;
+		}
 		
-		
-		ev.remove(ev.size()-1);
-		return ev.elementAt(ev.size()-1) ;
+		return ev.remove(0);
 	}
 
 	@Override
