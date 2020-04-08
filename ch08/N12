@@ -1,0 +1,43 @@
+package java100;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+import java.util.Vector;
+
+public class N12 {
+	public static void main(String[] args) throws IOException {
+		Scanner sc = new Scanner(System.in);
+System.out.println("대상 파일명 입력");
+		String file = sc.nextLine();
+		FileReader fin = new FileReader("c:\\MR\\" + file);
+		BufferedReader br = new BufferedReader(fin);
+
+		String line = null;
+
+		Vector<String> wd = new Vector<>();
+		int a = 1;
+		while ((line = br.readLine()) != null) {
+			wd.add(a + ": " + line);
+			a++;
+		}
+
+		
+		while(true) {
+			System.out.print("검색할 단어 입력 >");
+			String input = sc.nextLine();
+			
+			for(String s:wd ) {
+				
+				if(s.contains(input)) {
+					System.out.println(s);
+				}
+				
+			}
+			
+		}
+		
+	}
+}
