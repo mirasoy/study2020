@@ -1,7 +1,10 @@
+package chapter7;
+
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
@@ -40,63 +43,85 @@ public class N12 {
 
 		Scanner sc = new Scanner(System.in);
 		Vector<Word> v = new Vector<Word>();
+
+		v.add(new Word("apple", "사과"));
+		v.add(new Word("people", "사람"));
+		v.add(new Word("candy", "사탕"));
+		v.add(new Word("banana", "바나나"));
+		v.add(new Word("baby", "애기"));
+		v.add(new Word("game", "게임"));
+
 		Random rd = new Random();
 		System.out.println("********명품영어단어테스트************");
 		while (true) {
 			System.out.print("1.테스트 2.단어삽입  3.종료 >>");
+			try {
+				switch (sc.nextInt()) {
+				case 1:
+					sc.nextLine();
+					System.out.println("현재 " + v.size() + "개의 단어가 들어있습니다. -1을 입력하면 테스트를 종료합니다.");
+					while (true) {
 
-			switch (sc.nextInt()) {
-			case 1:
+						int[] idxN = new int[4];
+						for (int i = 0; i < 4; i++) {
+							idxN[i] = rd.nextInt(v.size());
+							for (int j = 0; j < i; j++) {
+								if (i != j) {
+									if (i > 0 && idxN[i] == idxN[j]) {
+										i--;
+									}
+								}
+
+							}
+						}
+
+						int idxQ = rd.nextInt(idxN.length);
+						int idxW = idxN[idxQ];
+						int ans = idxQ + 1;
+						System.out.println(v.elementAt(idxW).getEn() + "???");
+						for (int i = 0; i < idxN.length; i++) {
+							System.out.print("(" + (i + 1) + ")" + v.elementAt(idxN[i]).getKr() + " ");
+						}
+						System.out.println();
+						int input = sc.nextInt();
+						if (input == -1) {
+							break;
+						}
+						if (input<1 || input > 4){
+							System.out.println("잘못입력하셨습니다.");
+						}else{if (input == ans) {
+							System.out.println("bingo");
+						} else {
+							System.out.println("nooo");
+						}}
+						
+					}
+					break;
+
+				case 2:
+					System.out.println("영어 단어에 그만을 입력하면 종료합니다");
+					while (true) {
+						System.out.print("영어 한글 입력>>");
+						String key = sc.next();
+
+						if (key.equals("그만")) {
+							break;
+						}
+
+						String value = sc.next();
+						Word w = new Word(key, value);
+						v.add(w);
+
+					}
+				case 3:
+					System.out.println("end------------");
+					break;
+				default:
+					System.out.println("오입력");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("숫자입력필요");
 				sc.nextLine();
-				while (true) {
-					
-					int idx = rd.nextInt(v.size());
-					System.out.println(v.elementAt(idx).getEn() + "?");
-					
-//					ArrayList<String> ans = new ArrayList<String>();
-					
-					String[] sArr = new String[4];
-					
-					sArr[0] = v.elementAt(idx).getKr();
-					for(int i = 1 ; i < 3 ; i++) {
-						sArr[i] = v.elementAt(rd.nextInt(v.size())).getKr();
-					}
-					
-					Set<Integer> hs = new HashSet<Integer>();
-
-					for(int j = 0 ; hs.size() < 5 ; j++) {
-						hs.add(rd.nextInt(4)+1);
-					}
-					
-					ArrayList at=new ArrayList();
-					at.addAll(hs);
-					
-				
-					
-					System.out.print("(1)"+sArr[at.get(0)]);
-					System.out.print("(2)"+sArr[at.get(1)]);
-					System.out.print("(3)"+sArr[at.get(2)]);
-					System.out.print("(4)"+sArr[at.get(3)]);
-					
-					
-				}
-
-			case 2:
-				System.out.println("영어 단어에 그만을 입력하면 종료합니다");
-				while (true) {
-					System.out.print("영어 한글 입력>>");
-					String key = sc.next();
-
-					if (key.equals("그만")) {
-						break;
-					}
-
-					String value = sc.next();
-					Word w = new Word(key, value);
-					v.add(w);
-
-				}
-
 			}
 
 		}
