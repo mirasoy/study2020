@@ -4,7 +4,9 @@ import javax.swing.JOptionPane;
 
 import model.Dao;
 import model.Dto;
-import static re.Res.*;
+
+import java.util.Vector;
+
 import view.Screan;
 public class Cont extends Screan {
 
@@ -13,21 +15,37 @@ public class Cont extends Screan {
 	
 	
 	public Cont() {
-		new Screan();
+	
 	}
 
 	public void input(Dto newone) {
 
-		JOptionPane.showMessageDialog(super.frame, "추가되었습니다");
 		dao.input(newone);
+		
+		
+		
 		
 	}
 
-	public void output() {
+	public String[] output() {
+		
+		String[] arr = dao.outputinfo();
+		return arr;
 		
 		
+	}
+
+
+	public Vector<String[]> search(String name) {
+		Vector<String[]> searchresult = new Vector<String[]>(); 
 		
+		searchresult = dao.Search(name);
 		
+		return searchresult;
+	}
+
+	public void delete(int index) {
+		dao.delete(index);
 		
 	}
 

@@ -10,39 +10,29 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 import model.Dto;
 import re.Res;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
 
-public class Screan implements Res {
+public class Screan {
 
-	protected JFrame frame;
-	public JTextField getTextField() {
-		return textField;
-	}
-
-	public JTextField getTextField_1() {
-		return textField_1;
-	}
-
-	public JTextField getTextField_2() {
-		return textField_2;
-	}
-
-	public JTextField getTextField_3() {
-		return textField_3;
-	}
-
-	protected JTextField textField;
-	protected JTextField textField_1;
-	protected JTextField textField_2;
-	protected JTextField textField_3;
-	protected JTable table;
+	private JFrame frame;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTable table;
+	private DefaultTableModel model;
+	Object[] col = { "NO", "이름", "이메일", "전화번호" };
+	Object[][] col2 = {};
 
 	/**
 	 * Launch the application.
@@ -73,7 +63,7 @@ public class Screan implements Res {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
-		frame.setBounds(100, 100, 707, 360);
+		frame.setBounds(300, 300, 707, 360);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -124,10 +114,9 @@ public class Screan implements Res {
 		JButton button = new JButton("전체보기");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				ctn.output();
-				
-				
+				delTable();
+				printOut(Res.ctn.output());
+
 			}
 		});
 		button.setBounds(34, 271, 97, 23);
@@ -136,49 +125,59 @@ public class Screan implements Res {
 		JButton button_1 = new JButton("추가");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-				int idx = (Integer.parseInt(textField.getText()));
-				
-				String name =textField_1.getText();
-				String mail = textField_2.getText();
-				String phone = textField_3.getText();
-				Dto newone = new Dto();
-				
-				
-				newone.setIdx(idx);
-				newone.setMail(mail);
-				newone.setName(name);
-				newone.setPhone(phone);
-				
-				System.out.println(newone.toString());
-				
-				ctn.input(newone);
-//				textField.setText("");
-//				textField_1.setText("");
-//				textField_2.setText("");
-				textField_3.setText("");
+				delTable();
+				sendIf();
 
 			}
+
 		});
 		button_1.setBounds(165, 271, 97, 23);
 		frame.getContentPane().add(button_1);
 
 		JButton button_2 = new JButton("삭제");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delete();
+				delTable();
+			}
+
+			
+		});
 		button_2.setBounds(296, 271, 97, 23);
 		frame.getContentPane().add(button_2);
 
 		JButton button_3 = new JButton("검색");
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				delTable();
+				searchScrean();
+				
+			}
+
+		});
 		button_3.setBounds(427, 271, 97, 23);
 		frame.getContentPane().add(button_3);
 
 		JButton button_4 = new JButton("취소");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int result = JOptionPane.showConfirmDialog(null, "종료할까요?", "종료", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
 		button_4.setBounds(558, 271, 97, 23);
 		frame.getContentPane().add(button_4);
 
-		table = new JTable();
-		table.setBounds(314, 68, 348, 152);
-		frame.getContentPane().add(table);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(314, 68, 348, 152);
+		frame.getContentPane().add(scrollPane);
+
+		model = new DefaultTableModel(col2, col);
+
+		table = new JTable(model);
+		scrollPane.setViewportView(table);
 
 		JLabel label = new JLabel("고객관리시스템");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -186,5 +185,74 @@ public class Screan implements Res {
 		label.setForeground(UIManager.getColor("Button.highlight"));
 		label.setBounds(218, 10, 253, 42);
 		frame.getContentPane().add(label);
+
+	}
+
+	public void delTable() {
+
+		int size = model.getRowCount();
+
+		for (int i = 0; i < size; i++) {
+			model.removeRow(0);
+		}
+	}
+
+	public void printOut(String[] ob) {
+//		offText();
+		for (String s : ob) {
+			String[] addlist = s.split(",");
+			model.addRow(addlist);
+		}
+
+	}
+
+	public void offText() {
+		textField.setEnabled(false);
+		textField_1.setEnabled(false);
+		textField_2.setEnabled(false);
+		textField_3.setEnabled(false);
+
+	}
+
+	private void sendIf() {
+		// TODO Auto-generated method stub
+		int idx = (Integer.parseInt(textField.getText()));
+
+		String name = textField_1.getText();
+		String mail = textField_2.getText();
+		String phone = textField_3.getText();
+		Dto newone = new Dto();
+
+		newone.setIdx(idx);
+		newone.setMail(mail);
+		newone.setName(name);
+		newone.setPhone(phone);
+		Res.ctn.input(newone);
+		textField.setText(null);
+		textField_1.setText(null);
+		textField_2.setText(null);
+		textField_3.setText(null);
+		JOptionPane.showMessageDialog(null, "추가되었습니다");
+	}
+
+	public void searchScrean() {
+		String name = textField_1.getText();
+		Vector<String[]> reList = new Vector<String[]>();
+		reList.clear();
+		reList = Res.ctn.search(name);
+		if (reList.size() != 0) {
+			for (String[] resultSearch : reList) {
+				model.addRow(resultSearch);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "검색결과가 없습니다.");
+		}
+		textField_1.setText(null);
+	}
+
+	public void delete() {
+		int index = table.getSelectedRow();
+		Res.ctn.delete(index);
+		JOptionPane.showMessageDialog(null, "삭제되었습니다");
 	}
 }
