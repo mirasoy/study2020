@@ -166,6 +166,16 @@ public class MainMenuHandler implements ActionListener, ViewResource {
 
 	}
 
+	public void back() {
+		tangshang.clearSelection();
+		hot1Bg.clearSelection();
+		hot2Bg.clearSelection();
+		meatBg.clearSelection();
+		sizeBg.clearSelection();
+		JOptionPane.showMessageDialog(null, "취소되었습니다.");
+		card.next(mainMenu);
+	}
+
 }
 
 
@@ -183,9 +193,14 @@ class LastHandler implements ViewResource, ActionListener {
 				}
 
 				int no = Integer.parseInt((String) model.getValueAt(row, 0));
-
-				System.out.println(no);
-
+				String menu = ((String) model.getValueAt(row, 1));
+				
+				if(menu.indexOf("마라")!=-1){
+				
+					new InputCont().mainDel(no);
+					
+				}
+				
 				new InputCont().del(no);
 			}
 
@@ -195,14 +210,25 @@ class LastHandler implements ViewResource, ActionListener {
 				
 				String list = new InputCont().payment();
 				System.out.println(list);
+				int howmuch = new InputCont().howmuch();
+				
+				
+				if(howmuch==0){
+					JOptionPane.showMessageDialog(null, "주문내역이없습니다.");
+					return;
+				}
 				int choice = JOptionPane.showConfirmDialog(null, "주문을 확인해주세요\n"+list , "주문확인", 2);
 				
 				
 				
 				if(choice == 0) {
 					
-					int howmuch = new InputCont().howmuch();
-					JOptionPane.showConfirmDialog(null, howmuch+"원 결제하시겠습니까?", "금액확인", 2);
+					if(JOptionPane.showConfirmDialog(null, howmuch+"원 결제하시겠습니까?", "금액확인", 2) ==0){
+						
+						JOptionPane.showMessageDialog(null, "주문이 완료되었습니다.");
+						new InputCont().reset();
+						
+					}
 				}
 				
 			}

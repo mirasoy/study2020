@@ -19,8 +19,10 @@ public class LeftPanel implements ViewResource {
 		leftpanel.add(scrollPane);
 
 		delete.setBounds(85, 572, 120, 42);
+		delete.setBackground(Color.white);
 		leftpanel.add(delete);
 		payment.setBounds(250, 572, 120, 42);
+		payment.setBackground(Color.white);
 		leftpanel.add(payment);
 
 		delete.addActionListener(last);

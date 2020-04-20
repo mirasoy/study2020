@@ -97,5 +97,22 @@ public class InputCont {
 		return tmpDao.nowPrice();
 	}
 
+	public void mainDel(int no) {
+
+		if(tmpDao.mainDel(no)){
+			hand.back();
+		}
+		hand.showList(tmpDao.allList());
+		hand.showPrice(tmpDao.nowPrice());
+	}
+
+	public void reset() {
+		// TODO Auto-generated method stub
+		tmpDao.delall();
+		tmpDao.delall2();
+		hand.showList(tmpDao.allList());
+		hand.showPrice(tmpDao.nowPrice());
+	}
+
 	
 }

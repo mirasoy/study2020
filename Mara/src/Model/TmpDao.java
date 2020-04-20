@@ -28,28 +28,6 @@ public class TmpDao {
 		String inputSTR = "insert into tmp(menu,count,price,option) values (?,?,?,?)";
 		String updateSTR = "update  tmp set count =?, price = ? where no=?";
 
-//		try {
-//			statement = con.createStatement();
-//			rs = statement.executeQuery("SELECT * FROM TMP ");
-//
-//			while (rs.next()) {
-//
-//				if (rs.getString(2).equals(menu) && rs.getString(5).equals(option)) {
-//					pstmt = con.prepareStatement(updateSTR);
-//					int countUP = rs.getInt(3) + 1;
-//					
-//					pstmt.setInt(2, countUP);
-//					pstmt.setInt(3, countUP * price);
-//					pstmt.setInt(4, rs.getInt(2));
-//					pstmt.executeUpdate();
-//					return;
-//				}
-//			}
-//		} catch (SQLException e2) {
-//			// TODO Auto-generated catch block
-//			e2.printStackTrace();
-//		}
-
 		try {
 
 			pstmt = con.prepareStatement(inputSTR);
@@ -259,5 +237,97 @@ public class TmpDao {
 
 	}
 
-}
+	public boolean mainDel(int no2) {
+		connect();
+		boolean card1 = false;
+		boolean card2 = false;
+		try {
 
+			String find = "select *from tmp";
+			String find2 = "select *from tmpsave";
+			String delete = "delete from tmp where no = ?";
+			String delete2 = "delete from tmpsave where no = ?";
+
+			statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			rs = statement.executeQuery(find);
+
+			
+
+			while (rs.next()) {
+				if (rs.getInt(1) == no2) {
+					pstmt = con.prepareStatement(delete);
+					pstmt.setInt(1, no2);
+					pstmt.executeUpdate();
+					card1 = true;
+					
+				}
+			}
+			if (card1) {
+				rs.first();
+
+				while (rs.next()) {
+					if (rs.getString(2).indexOf("마라") != -1) {
+						break;
+						
+					}
+
+					if (rs.getString(2).indexOf("└") != -1) {
+						System.out.println("hi");
+						pstmt = con.prepareStatement(delete);
+						pstmt.setInt(1, rs.getInt(1));
+						pstmt.executeUpdate();
+
+					}
+				}
+			}
+
+			statement = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = statement.executeQuery(find2);
+
+			while (rs.next()) {
+				if (rs.getInt(1) == no2) {
+					pstmt = con.prepareStatement(delete2);
+					pstmt.setInt(1, no2);
+					pstmt.executeUpdate();
+					card2 = true;
+				}
+			}
+			if (card2) {
+				rs.first();
+
+				while (rs.next()) {
+					if (rs.getString(2).indexOf("마라") != -1) {
+						break;
+					}
+					if (rs.getString(2).indexOf("└") != -1) {
+						pstmt = con.prepareStatement(delete2);
+						pstmt.setInt(1, rs.getInt(1));
+						pstmt.executeUpdate();
+
+					}
+				}
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return card1;
+	}
+
+	public void delall2() {
+		connect();
+		try {
+			statement = con.createStatement();
+			pstmt = con.prepareStatement("delete from tmpsave");
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}
